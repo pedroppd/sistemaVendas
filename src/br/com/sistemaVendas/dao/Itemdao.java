@@ -1,0 +1,134 @@
+package br.com.sistemaVendas.dao;
+
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import br.com.sistemaVendas.domain.Item;
+import br.com.sistemaVendas.util.HibernateUtil;
+
+public class Itemdao {
+	
+	public void salvar(Item item) {
+		Session sessao = HibernateUtil.getSessionFactory().openSession(); // Conectando com o banco
+
+		Transaction transicao = null;
+
+		try {
+			transicao = sessao.beginTransaction(); // abrindo transação
+
+			sessao.save(item);
+
+			transicao.commit(); // verificando transação
+
+		} catch (RuntimeException ex) {
+
+			if (transicao != null) {
+				transicao.rollback();
+			}
+
+		} finally {
+			sessao.close();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Item> listar() {
+
+		Session sessao = HibernateUtil.getSessionFactory().openSession();
+		
+		List<Item> item = null;
+		
+		try {
+			Query consulta= sessao.getNamedQuery("Item.listar");
+			item = consulta.list();
+			
+			
+		}catch(RuntimeException ex) {
+			throw ex;
+		}finally {
+			sessao.close();
+		}
+		return item;
+	}
+	
+	public Item buscarPorCodigo(Long id) {
+		
+		Session sessao = HibernateUtil.getSessionFactory().openSession();
+		
+		Item item = null;
+		
+		try {
+			Query consulta = sessao.getNamedQuery("Item.buscarPorCodigo");
+			consulta.setLong("id", id);
+			item = (Item) consulta.uniqueResult();
+			
+		}catch(RuntimeException ex) {
+			throw ex;
+		}finally {
+			sessao.close();
+		}
+		
+		return item;
+	}
+	
+	
+	public void excluir(Long id) {
+		
+		Session sessao = HibernateUtil.getSessionFactory().openSession();
+		
+		Transaction transacao = null;
+		
+	
+		
+		try{
+			
+			transacao = sessao.beginTransaction();
+			
+			Item f = buscarPorCodigo(id);
+			
+			
+			sessao.delete(f);
+			
+			transacao.commit();
+			
+		}catch(Exception ex) {
+			
+			if(transacao != null) {
+			   transacao.rollback();
+			}
+			throw ex;
+		}finally {
+			sessao.close();
+		}
+	}
+	
+	
+	public void editar(Item item) {
+		Session sessao = HibernateUtil.getSessionFactory().openSession();
+		
+		Transaction transacao = null;
+		
+		try {
+			transacao = sessao.beginTransaction();
+			
+			sessao.update(item);
+			
+			transacao.commit();
+			
+			
+			
+		}catch(RuntimeException ex) {
+			
+			if(transacao != null) {
+				transacao.rollback();
+			}
+			throw ex;
+		}finally {
+			sessao.close();
+		}
+	}
+
+}

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{MBfuncionarios.prepararPesquisa}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+
+	<!-- abaixo tem o formulário de cadastro -->
+
+
+	<ui:define name="conteudo">
+
+		<!-- Formulario -->
+		<h:form>
+
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Funcionarios" />
+				</f:facet>
+			</p:toolbar>
+
+
+			<h:panelGrid columns="1">
+
+				<p:button value="Novo" outcome="/pages/funcionarioCadastro.xhtml">
+
+					<f:param name="foracao" value="novo" />
+
+				</p:button>
+
+			</h:panelGrid>
+
+		</h:form>
+
+		<!-- Tabela abaixo -->
+
+
+		<p:dataTable emptyMessage="Nenhum Funcionario encontrado :("
+			var="funcionarios" filteredValue="#{MBfuncionarios.itensFiltrados}"
+			value="#{MBfuncionarios.itens}" paginator="true" rows="7">
+
+
+			<p:column headerText="Código" sortBy="#{funcionarios.id}"
+				filterBy="#{funcionarios.id}">
+				<h:outputText value="#{funcionarios.id}" />
+			</p:column>
+
+			<p:column headerText="CPF" sortBy="#{funcionarios.cpf}"
+				filterBy="#{funcionarios.cpf}">
+				<h:outputText value="#{funcionarios.cpf}" />
+			</p:column>
+
+			<p:column headerText="Nome" sortBy="#{funcionarios.nome}"
+				filterBy="#{funcionarios.nome}">
+				<h:outputText value="#{funcionarios.nome}" />
+			</p:column>
+
+			<p:column headerText="Função" sortBy="#{funcionarios.funcao}"
+				filterBy="#{funcionarios.funcao}">
+				<h:outputText value="#{funcionarios.funcao}" />
+			</p:column>
+
+			<!-- Botões para EXCLUIR ou EDITAR-->
+
+			<p:column headerText="Opções">
+
+				<!-- Botão para Excluir -->
+
+				<p:button value="Excluir" icon="ui-icon-trash"
+					outcome="/pages/funcionarioCadastro.xhtml">
+
+					<f:param name="funcod" value="#{funcionarios.id}" />
+
+					<f:param name="funacao" value="excluir" />
+
+				</p:button>
+
+				<!-- Botão para Editar -->
+
+				<p:button value="Update" icon="ui-icon-pencil"
+					outcome="/pages/funcionarioCadastro.xhtml">
+
+					<f:param name="funcod" value="#{funcionarios.id}" />
+
+					<f:param name="funacao" value="editar" />
+
+				</p:button>
+
+			</p:column>
+
+
+
+		</p:dataTable>
+
+	</ui:define>
+
+
+</ui:composition>

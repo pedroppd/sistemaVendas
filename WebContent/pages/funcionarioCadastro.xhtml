@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+	<!-- Metadata para carregar o cadastro -->
+
+	<ui:define name="metadata">
+		<f:metadata>
+
+			<f:viewParam name="funacao" value="#{MBfuncionarios.acao}" />
+
+			<f:viewParam name="funcod" value="#{MBfuncionarios.codigo}" />
+
+			<f:event listener="#{MBfuncionarios.carregarCadastro}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+
+
+
+
+	<ui:define name="conteudo">
+
+		<h:form id="frmFunCad">
+
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Funcionários" />
+				</f:facet>
+			</p:toolbar>
+
+			<h:panelGrid columns="12" id="pnFunCad">
+
+
+				<p:outputLabel value="Nome:" />
+				<p:inputText maxlength="50" size="30"
+					value="#{MBfuncionarios.funcionarios.nome}"
+					readonly="#{MBfuncionarios.acao =='excluir'}">
+
+					<f:validateBean />
+
+				</p:inputText>
+
+
+
+				<p:outputLabel value="CPF" />
+				<p:inputMask mask="999.999.999-99" maxlength="50" size="30"
+					value="#{MBfuncionarios.funcionarios.cpf}"
+					readonly="#{MBfuncionarios.acao =='excluir'}">
+
+					<f:validateBean />
+
+				</p:inputMask>
+
+				<p:outputLabel value="Cargo:" />
+				<p:selectOneMenu value="#{MBfuncionarios.funcionarios.funcao}"
+					readonly="#{MBfuncionarios.acao =='excluir'}">
+					<f:selectItem itemValue="" itemLabel="Selecione um campo"/>
+					<f:selectItem itemValue="Gerente" itemLabel="Gerente"/>
+					<f:selectItem itemValue="Administrador" itemLabel="Administrador"/>
+					<f:selectItem itemValue="Balconista" itemLabel="Balconista"/>
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Senha:" />
+				<p:password value="#{MBfuncionarios.funcionarios.senha}"
+					readonly="#{MBfuncionarios.acao =='excluir'}">
+					<f:validateBean />
+				</p:password>
+			</h:panelGrid>
+
+			<!-- Botões para Buscar ou Cadastrar -->
+
+			<h:panelGrid columns="5" id="pnForCad">
+				<p:commandButton value="Salvar"
+					actionListener="#{MBfuncionarios.salvar}"
+					update=":frmFunCad:pnFunCad :msgGlobal" 
+					/>
+
+				<p:commandButton value="Novo"
+					actionListener="#{MBfuncionarios.novo}"
+					update=":frmFunCad:pnFunCad1"
+					rendered="#{MBfuncionarios.acao =='novo'}" />
+
+				<p:commandButton value="Excluir"
+					actionListener="#{MBfuncionarios.excluir}"
+					update=":frmFunCad:pnFunCad :msgGlobal"
+					rendered="#{MBfuncionarios.acao =='excluir'}" />
+
+				<p:commandButton value="Editar"
+					actionListener="#{MBfuncionarios.editar}"
+					update=":frmFunCad:pnFunCad :msgGlobal"
+					rendered="#{MBfuncionarios.acao =='editar'}" />
+
+				<p:button value="Voltar" outcome="/pages/funcionarioPesquisa.xhtml" />
+
+			</h:panelGrid>
+
+		</h:form>
+
+
+
+
+
+
+	</ui:define>
+
+
+</ui:composition>

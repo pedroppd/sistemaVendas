@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/modelo.xhtml">
+
+
+	
+
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{MBfornecedores.prepararPesquisa}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+
+
+	<ui:define name="conteudo">
+
+		<h:form>
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Fornecedores" />
+				</f:facet>
+			</p:toolbar>
+			<h:panelGrid columns="4">
+			
+				<p:outputLabel value="Descrição" />
+				<p:inputText maxlength="50" size="30" />
+
+				<!-- Botões para Buscar ou Cadastrar -->
+
+				<p:button value="Buscar" />
+				<p:button value="Novo" outcome="/pages/fornecedorCadastro.xhtml">
+				
+					<f:param name="foracao" value="novo"/>
+					
+				</p:button>
+			</h:panelGrid>
+
+		</h:form>
+
+		<!-- Tabela abaixo -->
+
+
+		<p:dataTable emptyMessage="Nenhum Fornecedor encontrado :("
+			value="#{MBfornecedores.itens}" var="fornecedores"
+			filteredValue="#{MBfornecedores.itensFiltrados}" paginator="true"
+			rows="7">
+
+
+			<p:column headerText="Código">
+
+				<h:outputText value="#{fornecedores.id}" />
+
+			</p:column>
+
+			<p:column headerText="Descrição" filterBy="#{fornecedores.descricao}"
+				sortBy="#{fornecedores.descricao}">
+
+				<h:outputText value="#{fornecedores.descricao}" />
+
+			</p:column>
+
+			<p:column headerText="Opções">
+
+				<p:button value="Excluir" icon="ui-icon-trash" outcome="/pages/fornecedorCadastro.xhtml">
+
+					    <f:param name="forcod" value="#{fornecedores.id}"  />
+					
+						<f:param name="foracao" value="excluir"/>
+
+				</p:button>
+
+
+				<p:button value="Update" icon="ui-icon-pencil" outcome="/pages/fornecedorCadastro.xhtml">
+
+					    <f:param name="forcod" value="#{fornecedores.id}" />
+					
+						<f:param name="foracao" value="editar"/>
+
+				</p:button>
+
+			</p:column>
+
+
+
+		</p:dataTable>
+
+	</ui:define>
+
+
+</ui:composition>
